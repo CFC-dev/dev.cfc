@@ -7,35 +7,158 @@
   <title>CFCフォトストック</title>
   <style>
     :root {
-      --primary-color: #4a90e2; --secondary-color: #f5f5f5; --border-color: #ddd;
-      --text-color: #333; --card-bg: #fff; --shadow-color: rgba(0,0,0,0.1);
-      --success-color: #28a745; --error-color: #dc3545;
+      --primary-color: #4a90e2;
+      --secondary-color: #f5f5f5;
+      --border-color: #ddd;
+      --text-color: #333;
+      --card-bg: #fff;
+      --shadow-color: rgba(0,0,0,0.1);
+      --success-color: #28a745;
+      --error-color: #dc3545;
     }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 20px; background-color: var(--secondary-color); color: var(--text-color); }
-    .container { max-width: 1200px; margin: 0 auto; }
-    h1 { color: var(--primary-color); text-align: center; margin-bottom: 2rem; }
-    .card { background-color: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px var(--shadow-color); padding: 2rem; margin-bottom: 2rem; }
-    .form-group { margin-bottom: 1.5rem; }
-    label { display: block; margin-bottom: .5rem; font-weight: 600; }
-    input[type="text"], input[type="file"] { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; }
-    input[type="file"] { padding: 3px; }
-    .btn { display: inline-block; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.2s ease-in-out; }
-    .btn-primary { background-color: var(--primary-color); color: white; } .btn-primary:hover { opacity: 0.9; }
-    #imageGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
-    .image-card { background-color: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 8px var(--shadow-color); overflow: hidden; display: flex; flex-direction: column; height: 100%; }
-    .image-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
-    .image-card-content { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
-    .image-card-content p { margin: 0 0 10px 0; font-size: 0.9rem; word-break: break-all; flex-grow: 1; }
-    .image-card-content .tags { font-size: 0.8rem; color: #666; }
-    .image-card .btn { width: 100%; box-sizing: border-box; background-color: var(--success-color); color: white; text-align: center; text-decoration: none; font-size: 0.9rem; padding: 8px; }
-    #loader, #uploading-loader { display: none; text-align: center; padding: 2rem; font-size: 1.2rem; font-weight: 500; }
-    #message-area { text-align: center; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; display: none; font-weight: 500; }
-    .message-success { background-color: #d4edda; color: #155724; } .message-error { background-color: #f8d7da; color: #721c24; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: .5rem;
+      font-weight: 600;
+    }
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input[type="file"] {
+      padding: 3px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+    #imageGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .image-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .image-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .image-card-content {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .image-card-content p {
+      margin: 0 0 10px 0;
+      font-size: 0.9rem;
+      word-break: break-all;
+      flex-grow: 1;
+    }
+    .image-card-content .tags {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .image-card .btn {
+      width: 100%;
+      box-sizing: border-box;
+      background-color: var(--success-color);
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+    #loader, #uploading-loader {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+    #message-area {
+      text-align: center;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      display: none;
+      font-weight: 500;
+    }
+    .message-success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .message-error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    #setup-message {
+      background-color: #e2f3ff;
+      color: #004085;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>CFCフォトストック</h1>
+
+    <div id="setup-message"><?!= setupMessage ?></div>
+
     <div class="card">
       <h2>画像のアップロード</h2>
       <div id="message-area"></div>
@@ -49,9 +172,12 @@
           <input type="text" id="tags" name="tags" placeholder="例: 会議, 2024年, ロゴ">
         </div>
         <button type="submit" class="btn btn-primary">アップロード</button>
-        <div id="uploading-loader"><p>アップロード中... しばらくお待ちください。</p></div>
+        <div id="uploading-loader">
+          <p>アップロード中... しばらくお待ちください。</p>
+        </div>
       </form>
     </div>
+
     <div class="card">
       <h2>画像ライブラリ</h2>
       <form id="searchForm">
@@ -66,99 +192,134 @@
   </div>
 
 <script>
-  // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-  // ★ ここに、先ほどコピーしたGASのウェブアプリURLを貼り付けてください ★
-  // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbz-YaiMpVm_1yTRdsV3AMmbiI9ijKh0VzuGMIrjr7TRk2Vta7h4A2sgffyb3YvicHFNXw/exec";
-
   let isUploading = false;
 
+  // フォーム送信時の処理
   document.getElementById('uploadForm').addEventListener('submit', handleFormSubmit);
+  
+  // 検索フォームの処理
   document.getElementById('searchForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    fetchAndDisplayImages(document.getElementById('searchTag').value);
+    const searchTag = document.getElementById('searchTag').value;
+    fetchAndDisplayImages(searchTag);
   });
-  window.addEventListener('load', () => fetchAndDisplayImages());
+
+  // ページ読み込み完了時の処理
+  window.addEventListener('load', () => {
+    runWhenApiReady(fetchAndDisplayImages);
+
+    const setupMessageDiv = document.getElementById('setup-message');
+    if (setupMessageDiv && setupMessageDiv.innerHTML.trim() === '') {
+      setupMessageDiv.style.display = 'none';
+    }
+  });
 
   /**
-   * GASのAPIを呼び出す共通関数
+   * google.script.runが利用可能になるまで待ってから関数を実行する
    */
-  async function callGasApi(functionName, parameters = []) {
-    const response = await fetch(GAS_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Content-Typeをtext/plainに変更
-      body: JSON.stringify({ function: functionName, parameters: parameters }),
-      redirect: "follow"
-    });
-    
-    if (!response.ok) {
-      throw new Error(`APIリクエストに失敗しました: ${response.statusText}`);
-    }
-    
-    const result = await response.json();
-    if (!result.success) {
-      throw new Error(result.error || '不明なサーバーエラーが発生しました。');
-    }
-    return result.data;
+  function runWhenApiReady(functionToRun) {
+    const interval = setInterval(() => {
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        clearInterval(interval);
+        functionToRun();
+      }
+    }, 100);
   }
 
+  /**
+   * フォームの送信を処理する
+   */
   function handleFormSubmit(e) {
     e.preventDefault();
     if (isUploading) return;
+
     const fileInput = document.getElementById('imageFile');
+    const tagsInput = document.getElementById('tags');
+    
     if (fileInput.files.length === 0) {
       showMessage('画像ファイルを選択してください。', 'error');
       return;
     }
+    
     setUploadingState(true);
+
     const file = fileInput.files[0];
     const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        const bytes = Array.from(new Uint8Array(e.target.result));
-        const formData = {
-          bytes,
-          mimeType: file.type,
-          fileName: file.name,
-          tags: document.getElementById('tags').value,
-        };
-        const response = await callGasApi('uploadImage', [formData]);
-        showMessage(response.message, response.success ? 'success' : 'error');
-        if (response.success) {
-          document.getElementById('uploadForm').reset();
-          fetchAndDisplayImages();
-        }
-      } catch (err) {
-        showMessage(`アップロードエラー: ${err.message}`, 'error');
-      } finally {
-        setUploadingState(false);
-      }
+
+    reader.onload = function(e) {
+      const bytes = Array.from(new Uint8Array(e.target.result));
+      const formData = {
+        bytes: bytes,
+        mimeType: file.type,
+        fileName: file.name,
+        tags: tagsInput.value,
+      };
+      
+      google.script.run
+        .withSuccessHandler(response => {
+          // ★修正点: レスポンスを元にメッセージ表示とリスト更新を行う
+          showMessage(response.message, response.success ? 'success' : 'error');
+          if (response.success && response.newImage) {
+            document.getElementById('uploadForm').reset();
+            
+            // 新しい画像をリストの先頭に直接追加する
+            const grid = document.getElementById('imageGrid');
+            const newCard = createImageCard(response.newImage);
+            grid.prepend(newCard);
+
+            // 「画像がありません」のメッセージが表示されていれば消す
+            const noImageMsg = grid.querySelector('p');
+            if (noImageMsg && noImageMsg.textContent.includes('表示する画像がありません')) {
+              noImageMsg.remove();
+            }
+          }
+          setUploadingState(false);
+        })
+        .withFailureHandler(err => {
+          showMessage(`アップロードエラー: ${err.message}`, 'error');
+          setUploadingState(false);
+        })
+        .uploadImage(formData);
     };
-    reader.onerror = (err) => {
+
+    reader.onerror = function(err) {
       showMessage('ファイル読み込みエラー: ' + err.message, 'error');
       setUploadingState(false);
     };
+
     reader.readAsArrayBuffer(file);
   }
 
-  async function fetchAndDisplayImages(tag = '') {
+  /**
+   * 画像を取得して表示する
+   */
+  function fetchAndDisplayImages(tag = '') {
     document.getElementById('loader').style.display = 'block';
-    const grid = document.getElementById('imageGrid');
-    grid.innerHTML = '';
-    try {
-      const images = await callGasApi('getImages', [tag]);
-      if (images && images.length > 0) {
-        images.forEach(image => grid.appendChild(createImageCard(image)));
-      } else {
-        grid.innerHTML = '<p>表示する画像がありません。</p>';
-      }
-    } catch (err) {
-      showMessage(`画像取得エラー: ${err.message}`, 'error');
-    } finally {
-      document.getElementById('loader').style.display = 'none';
-    }
+    document.getElementById('imageGrid').innerHTML = '';
+    
+    google.script.run
+      .withSuccessHandler(images => {
+        const grid = document.getElementById('imageGrid');
+        if (images && images.length > 0) {
+          images.forEach(image => {
+            const card = createImageCard(image);
+            grid.appendChild(card);
+          });
+        } else {
+          grid.innerHTML = '<p>表示する画像がありません。</p>';
+        }
+        document.getElementById('loader').style.display = 'none';
+      })
+      .withFailureHandler(err => {
+        showMessage(`画像取得エラー: ${err.message}`, 'error');
+        document.getElementById('loader').style.display = 'none';
+      })
+      .getImages(tag);
   }
-  
+
+  /**
+   * 画像表示用のカードHTML要素を作成する
+   */
   function createImageCard(image) {
     const card = document.createElement('div');
     card.className = 'image-card';
@@ -167,32 +328,71 @@
       <div class="image-card-content">
         <p title="${image.fileName}">${truncateString(image.fileName, 40)}</p>
         <p class="tags"><strong>タグ:</strong> ${image.tags || 'なし'}</p>
-        <a href="#" class="btn" onclick="downloadImage(event, '${image.fileId}'); return false;">ダウンロード</a>
+        <a href="#" class="btn" onclick="downloadImage('${image.fileId}', '${image.fileName}'); return false;">ダウンロード</a>
       </div>
     `;
     return card;
   }
   
-  async function downloadImage(event, fileId) {
-     const button = event.target;
-     button.textContent = '準備中...';
-     try {
-       const url = await callGasApi('getDownloadUrl', [fileId]);
-       if (url) {
-          window.open(url, '_blank');
-       } else {
-         showMessage('ダウンロードURLの取得に失敗しました。', 'error');
-       }
-     } catch(err) {
-       showMessage(`ダウンロードエラー: ${err.message}`, 'error');
-     } finally {
-       button.textContent = 'ダウンロード';
-     }
+  /**
+   * 画像をダウンロードする
+   */
+  function downloadImage(fileId, fileName) {
+     event.target.textContent = '準備中...';
+     google.script.run
+      .withSuccessHandler(url => {
+        if (url) {
+          const a = document.createElement('a');
+          a.href = url;
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          event.target.textContent = 'ダウンロード';
+        } else {
+          showMessage('ダウンロードURLの取得に失敗しました。', 'error');
+          event.target.textContent = 'ダウンロード';
+        }
+      })
+      .withFailureHandler(err => {
+        showMessage(`ダウンロードエラー: ${err.message}`, 'error');
+        event.target.textContent = 'ダウンロード';
+      })
+      .getDownloadUrl(fileId);
   }
 
-  function showMessage(msg, type) { /* 省略（変更なし） */ }
-  function setUploadingState(uploading) { /* 省略（変更なし） */ }
-  function truncateString(str, num) { /* 省略（変更なし） */ }
+  /**
+   * ユーザーへのメッセージを表示する
+   */
+  function showMessage(msg, type) {
+    const messageArea = document.getElementById('message-area');
+    messageArea.textContent = msg;
+    messageArea.className = type === 'success' ? 'message-success' : 'error';
+    messageArea.style.display = 'block';
+    setTimeout(() => {
+      messageArea.style.display = 'none';
+    }, 5000);
+  }
+
+  /**
+   * アップロード中のUI状態を管理する
+   */
+  function setUploadingState(uploading) {
+    isUploading = uploading;
+    document.getElementById('uploading-loader').style.display = uploading ? 'block' : 'none';
+    document.querySelector('#uploadForm button').disabled = uploading;
+    document.querySelector('#uploadForm button').textContent = uploading ? '処理中...' : 'アップロード';
+  }
+
+  /**
+   * 文字列を省略する
+   */
+  function truncateString(str, num) {
+    if (str.length <= num) {
+      return str;
+    }
+    return str.slice(0, num) + '...';
+  }
 </script>
 </body>
 </html>
