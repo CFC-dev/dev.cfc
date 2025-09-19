@@ -30,7 +30,8 @@
     .image-card .btn { width: 100%; box-sizing: border-box; background-color: var(--success-color); color: white; text-align: center; text-decoration: none; font-size: 0.9rem; padding: 8px; }
     #loader, #uploading-loader { display: none; text-align: center; padding: 2rem; font-size: 1.2rem; font-weight: 500; }
     #message-area { text-align: center; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; display: none; font-weight: 500; }
-    .message-success { background-color: #d4edda; color: #155724; } .message-error { background-color: #f8d7da; color: #721c24; }
+    .message-success { background-color: #d4edda; color: #155724; }
+    .message-error { background-color: #f8d7da; color: #721c24; }
   </style>
 </head>
 <body>
@@ -67,9 +68,9 @@
 
 <script>
   // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-  // ★ ここに、先ほどコピーしたGASのウェブアプリURLを貼り付けてください ★
+  // ★ ここに、GASのウェブアプリURLを貼り付けてください ★
   // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-  const GAS_API_URL = "https://script.google.com/macros/s/AKfycby1B6MZjBa6nXklwYGAjgYOBt3kMC1wo9RxkMYNnL6iN-aBjTCVbcPJNRKbKxaPwmZVgQ/exec";
+  const GAS_API_URL = "ここにGASのウェブアプリURLを貼り付け";
 
   let isUploading = false;
 
@@ -86,7 +87,7 @@
   async function callGasApi(functionName, parameters = []) {
     const response = await fetch(GAS_API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Content-Typeをtext/plainに変更
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ function: functionName, parameters: parameters }),
       redirect: "follow"
     });
@@ -190,9 +191,43 @@
      }
   }
 
-  function showMessage(msg, type) { /* 省略（変更なし） */ }
-  function setUploadingState(uploading) { /* 省略（変更なし） */ }
-  function truncateString(str, num) { /* 省略（変更なし） */ }
+  // ★★★★★ 修正点: 以下の補助関数を実装 ★★★★★
+  
+  /**
+   * ユーザーへのメッセージを表示する
+   */
+  function showMessage(msg, type) {
+    const messageArea = document.getElementById('message-area');
+    messageArea.textContent = msg;
+    messageArea.className = type === 'success' ? 'message-success' : 'message-error';
+    messageArea.style.display = 'block';
+    setTimeout(() => {
+      if(messageArea.textContent === msg) { // メッセージが更新されていない場合のみ消す
+        messageArea.style.display = 'none';
+      }
+    }, 5000);
+  }
+
+  /**
+   * アップロード中のUI状態を管理する
+   */
+  function setUploadingState(uploading) {
+    isUploading = uploading;
+    document.getElementById('uploading-loader').style.display = uploading ? 'block' : 'none';
+    const button = document.querySelector('#uploadForm button');
+    button.disabled = uploading;
+    button.textContent = uploading ? '処理中...' : 'アップロード';
+  }
+
+  /**
+   * 文字列を省略する
+   */
+  function truncateString(str, num) {
+    if (str.length <= num) {
+      return str;
+    }
+    return str.slice(0, num) + '...';
+  }
 </script>
 </body>
 </html>
